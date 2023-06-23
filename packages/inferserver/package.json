@@ -1,0 +1,58 @@
+{
+  "name": "@altiplano/inferserver",
+  "version": "0.0.1",
+  "description": "Altiplano base inference server",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synw/altiplano.git"
+  },
+  "keywords": [
+    "llm",
+    "ai"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "run-s build servejs",
+    "serve": "tsc -w & nodemon -q -w src dist/bin/runserver.js",
+    "runserver": "node dist/bin/runserver.js"
+  },
+  "dependencies": {
+    "@altiplano/usellama": "^0.0.1",
+    "@koa/cors": "^4.0.0",
+    "koa": "^2.14.1",
+    "koa-body": "^6.0.1",
+    "koa-router": "^12.0.0",
+    "koa-static": "^5.0.0",
+    "llama-node": "0.1.6",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@altiplano/types": "^0.0.1",
+    "@types/koa": "^2.13.6",
+    "@types/koa-router": "^7.4.4",
+    "@types/koa-static": "^4.0.2",
+    "@types/node": "^18.15.11",
+    "autoprefixer": "^10.4.4",
+    "nodemon": "^2.0.22",
+    "npm-run-all": "^4.1.5",
+    "path": "^0.12.7",
+    "ts-node": "^10.9.1",
+    "ts-node-esm": "^0.0.6",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "inferserver": "dist/bin/runserver.js"
+  },
+  "preferGlobal": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
