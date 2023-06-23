@@ -1,6 +1,6 @@
 {
   "name": "@altiplano/inferserver",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "Altiplano base inference server",
   "license": "MIT",
   "repository": {
@@ -18,7 +18,7 @@
     "runserver": "node dist/bin/runserver.js"
   },
   "dependencies": {
-    "@altiplano/usellama": "^0.0.1",
+    "@altiplano/usellama": "^0.0.3",
     "@koa/cors": "^4.0.0",
     "koa": "^2.14.1",
     "koa-body": "^6.0.1",

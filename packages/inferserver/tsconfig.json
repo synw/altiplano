@@ -4,7 +4,6 @@
     "module": "esnext",
     "moduleResolution": "nodenext",
     "strict": true,
-    "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -23,7 +22,8 @@
         "src/*"
       ]
     },
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true
   },
   "include": [
     "src/**/*.ts",

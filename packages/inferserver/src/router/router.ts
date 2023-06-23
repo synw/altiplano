@@ -5,7 +5,7 @@ import path from 'path';
 import { onReady, lm, dirpath } from '../state.js';
 import { useModelRouter } from './model/model_router.js';
 import { OptionalInferenceParams } from '@altiplano/types';
-import { LmRouterParams } from '@/interfaces.js';
+import { LmRouterParams } from '../interfaces.js';
 
 const useLmRouter = (
   routes: Array<(r: Router) => void> = [],

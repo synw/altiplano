@@ -1,40 +1,20 @@
 import { LLM } from "llama-node";
 import type { LLMResult } from "llama-node";
-import type { Generate } from "@llama-node/llama-cpp";
-import { LLamaCpp, LoadConfig } from "llama-node/dist/llm/llama-cpp.js";
+import { LLamaCpp } from "llama-node/dist/llm/llama-cpp.js";
 import { OptionalInferenceParams, TemplateVar, InferenceResult, OptionalModelParams } from "@altiplano/types";
 import { UseLlamaParams } from "./interfaces.js";
 import { formatHrtime } from "./time.js";
-
+import { defaultModelConf, defaultInferenceParams } from "./conf.js";
 
 const useLlama = (options: UseLlamaParams = {}) => {
   let llama = new LLM(LLamaCpp);
-  const _modelConfig: LoadConfig = {
-    modelPath: "",
-    nCtx: 2048,
-    enableLogging: true,
-    seed: 0,
-    f16Kv: false,
-    logitsAll: false,
-    vocabOnly: false,
-    useMlock: false,
-    embedding: false,
-    useMmap: true,
-    nGpuLayers: 0,
-  }
-  const _inferenceParams: Generate = {
-    prompt: "",
-    nThreads: 4,
-    nTokPredict: 1024,
-    temp: 0.2,
-  }
   const model = {
     name: "",
     path: "",
     isLoaded: false,
     isInfering: false,
-    config: _modelConfig,
-    inferenceParams: _inferenceParams,
+    config: defaultModelConf,
+    inferenceParams: defaultInferenceParams,
   }
   let abortController = new AbortController();
 
