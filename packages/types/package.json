@@ -1,6 +1,6 @@
 {
   "name": "@altiplano/types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Altiplano shared data structures",
   "scripts": {
     "build": "tsc -p ."
