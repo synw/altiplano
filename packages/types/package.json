@@ -1,0 +1,23 @@
+{
+  "name": "@altiplano/types",
+  "version": "0.0.1",
+  "description": "Altiplano shared data structures",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.36",
+    "tslib": "^2.5.3",
+    "typescript": "^4.9.5"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/interfaces.js",
+  "types": "dist/interfaces.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT"
+}
