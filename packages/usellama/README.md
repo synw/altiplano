@@ -152,14 +152,48 @@ lm.abort();
 
 ### Model info
 
-To get information about the currently used model a readonly `model` variable is available:
+To get information about the currently used model a readonly `model` getter is available:
 
 ```js
 {
-    name: "open-llama-7B-open-instruct.ggmlv3.q5_1",
-    path: "/some/absolute/path/to/model/dir",
-    isLoaded: false,
+  name: 'open-llama-7B-open-instruct.ggmlv3.q5_1',
+  path: '/path/to/models/open-llama-7B-open-instruct.ggmlv3.q5_1.bin',
+  isLoaded: true,
+  isInfering: false,
+  config: {
+    modelPath: '/path/to/models/open-llama-7B-open-instruct.ggmlv3.q5_1.bin',
+    nCtx: 1024,
+    enableLogging: true,
+    seed: 0,
+    f16Kv: false,
+    logitsAll: false,
+    vocabOnly: false,
+    useMlock: false,
+    embedding: false,
+    useMmap: true,
+    nGpuLayers: 0
+  },
+  inferenceParams: {
+    prompt: '',
+    nThreads: 4,
+    nTokPredict: 512,
+    logitBias: undefined,
+    topK: undefined,
+    topP: undefined,
+    tfsZ: undefined,
+    temp: 0.2,
+    typicalP: undefined,
+    repeatPenalty: 1,
+    repeatLastN: undefined,
+    frequencyPenalty: undefined,
+    presencePenalty: undefined,
+    mirostat: undefined,
+    mirostatTau: undefined,
+    mirostatEta: undefined,
+    stopSequence: undefined,
+    penalizeNl: undefined
   }
+}
 ```
 
 ## Example

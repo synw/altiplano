@@ -9,12 +9,7 @@ import { formatHrtime } from "./time.js";
 
 const useLlama = (options: UseLlamaParams = {}) => {
   let llama = new LLM(LLamaCpp);
-  const model = {
-    name: "",
-    path: "",
-    isLoaded: false,
-  }
-  let modelConfig: LoadConfig = {
+  const _modelConfig: LoadConfig = {
     modelPath: "",
     nCtx: 2048,
     enableLogging: true,
@@ -27,29 +22,34 @@ const useLlama = (options: UseLlamaParams = {}) => {
     useMmap: true,
     nGpuLayers: 0,
   }
-  let inferenceParams: Generate = {
+  const _inferenceParams: Generate = {
     prompt: "",
     nThreads: 4,
     nTokPredict: 1024,
     temp: 0.2,
   }
+  const model = {
+    name: "",
+    path: "",
+    isLoaded: false,
+    isInfering: false,
+    config: _modelConfig,
+    inferenceParams: _inferenceParams,
+  }
   let abortController = new AbortController();
-  let isInfering = false;
 
   function _createConfig(modelPath: string, params?: OptionalModelParams) {
-    modelConfig = {
-      modelPath: modelPath,
-      nCtx: params?.nCtx ?? modelConfig.nCtx,
-      enableLogging: params?.enableLogging ?? modelConfig.enableLogging,
-      seed: params?.seed ?? modelConfig.seed,
-      f16Kv: params?.f16Kv ?? modelConfig.f16Kv,
-      logitsAll: params?.logitsAll ?? modelConfig.logitsAll,
-      vocabOnly: params?.vocabOnly ?? modelConfig.vocabOnly,
-      useMlock: params?.useMlock ?? modelConfig.useMlock,
-      embedding: params?.embedding ?? modelConfig.embedding,
-      useMmap: params?.useMmap ?? modelConfig.useMmap,
-      nGpuLayers: params?.nGpuLayers ?? modelConfig.nGpuLayers,
-    };
+    model.config.modelPath = modelPath;
+    model.config.nCtx = params?.nCtx ?? model.config.nCtx;
+    model.config.enableLogging = params?.enableLogging ?? model.config.enableLogging;
+    model.config.seed = params?.seed ?? model.config.seed;
+    model.config.f16Kv = params?.f16Kv ?? model.config.f16Kv;
+    model.config.logitsAll = params?.logitsAll ?? model.config.logitsAll;
+    model.config.vocabOnly = params?.vocabOnly ?? model.config.vocabOnly;
+    model.config.useMlock = params?.useMlock ?? model.config.useMlock;
+    model.config.embedding = params?.embedding ?? model.config.embedding;
+    model.config.useMmap = params?.useMmap ?? model.config.useMmap;
+    model.config.nGpuLayers = params?.nGpuLayers ?? model.config.nGpuLayers;
   }
 
   function _modelNameFromPath(modelPath: string): string {
@@ -75,9 +75,9 @@ const useLlama = (options: UseLlamaParams = {}) => {
       throw new Error("Provide a model path or run useModel before")
     }
     if (options.verbose) {
-      console.log("Loading model", modelPath, "with config", modelConfig)
+      console.log("Loading model", modelPath, "with config", model.config)
     }
-    await llama.load(modelConfig);
+    await llama.load(model.config);
     model.isLoaded = true;
   }
 
@@ -89,7 +89,7 @@ const useLlama = (options: UseLlamaParams = {}) => {
   }
 
   const abort = () => {
-    if (isInfering) {
+    if (model.isInfering) {
       abortController.abort()
     } else {
       console.warn("No inference is running, nothing to abort")
@@ -97,26 +97,24 @@ const useLlama = (options: UseLlamaParams = {}) => {
   }
 
   const params = (p: OptionalInferenceParams = {}) => {
-    inferenceParams = {
-      prompt: "",
-      nThreads: p?.nThreads ?? inferenceParams.nThreads,
-      nTokPredict: p?.nTokPredict ?? inferenceParams.nTokPredict,
-      logitBias: p?.logitBias,
-      topK: p?.topK ?? inferenceParams.topK,
-      topP: p?.topP ?? inferenceParams.topP,
-      tfsZ: p?.tfsZ,
-      temp: p?.temp ?? inferenceParams.temp,
-      typicalP: p?.typicalP,
-      repeatPenalty: p?.repeatPenalty ?? inferenceParams.repeatPenalty,
-      repeatLastN: p?.repeatLastN,
-      frequencyPenalty: p?.frequencyPenalty,
-      presencePenalty: p?.presencePenalty,
-      mirostat: p?.mirostat,
-      mirostatTau: p?.mirostatTau,
-      mirostatEta: p?.mirostatEta,
-      stopSequence: p?.stopSequence,
-      penalizeNl: p?.penalizeNl
-    }
+    model.inferenceParams.prompt = "";
+    model.inferenceParams.nThreads = p?.nThreads ?? model.inferenceParams.nThreads;
+    model.inferenceParams.nTokPredict = p?.nTokPredict ?? model.inferenceParams.nTokPredict;
+    model.inferenceParams.logitBias = p?.logitBias;
+    model.inferenceParams.topK = p?.topK ?? model.inferenceParams.topK;
+    model.inferenceParams.topP = p?.topP ?? model.inferenceParams.topP;
+    model.inferenceParams.tfsZ = p?.tfsZ;
+    model.inferenceParams.temp = p?.temp ?? model.inferenceParams.temp;
+    model.inferenceParams.typicalP = p?.typicalP;
+    model.inferenceParams.repeatPenalty = p?.repeatPenalty ?? model.inferenceParams.repeatPenalty;
+    model.inferenceParams.repeatLastN = p?.repeatLastN;
+    model.inferenceParams.frequencyPenalty = p?.frequencyPenalty;
+    model.inferenceParams.presencePenalty = p?.presencePenalty;
+    model.inferenceParams.mirostat = p?.mirostat;
+    model.inferenceParams.mirostatTau = p?.mirostatTau;
+    model.inferenceParams.mirostatEta = p?.mirostatEta;
+    model.inferenceParams.stopSequence = p?.stopSequence;
+    model.inferenceParams.penalizeNl = p?.penalizeNl;
   }
 
   const infer = async (prompt: string, template?: string, vars: Array<TemplateVar> = []): Promise<LLMResult> => {
@@ -137,18 +135,18 @@ const useLlama = (options: UseLlamaParams = {}) => {
       _prompt = parsedTemplate;
     }
     const _params = {
-      ...inferenceParams,
+      ...model.inferenceParams,
       prompt: _prompt,
     }
     if (options.verbose) {
       console.log(`Running ${model.name} with params:`);
-      console.log(JSON.stringify(inferenceParams, null, "  "));
+      console.log(JSON.stringify(model.inferenceParams, null, "  "));
       console.log("\n------ prompt ------");
       console.log(_prompt);
       console.log("----------------------\n");
     }
     abortController = new AbortController();
-    isInfering = true;
+    model.isInfering = true;
     let res: InferenceResult = {
       tokens: [],
       completed: false,
@@ -207,7 +205,7 @@ const useLlama = (options: UseLlamaParams = {}) => {
         throw e
       }
     }
-    isInfering = false;
+    model.isInfering = false;
     if (options.onEndInfer) {
       options.onEndInfer();
     }
