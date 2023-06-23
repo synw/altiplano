@@ -1,0 +1,12 @@
+name: fix_json
+model: open-llama-7B-open-instruct.ggmlv3.q5_1
+inferParams:
+  - topK: 40,
+  - topP: 0.1,
+  - temp: 0,
+  - repeatPenalty: 1
+template: |-
+  ### Instruction: Fix this invalid json:
+
+  {prompt}
+  ### Response: (Answer only with json)
