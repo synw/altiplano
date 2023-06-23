@@ -14,9 +14,14 @@ npm install -g @altiplano/taskserver
 
 ### Create a task
 
+Create a tasks folder and put a task in subfolders:
+
 ```bash
 mkdir tasks
 cd tasks
+mkdir code
+cd code
+mkdir json
 touch mytask.yaml
 ```
 
