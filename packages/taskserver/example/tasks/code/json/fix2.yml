@@ -1,14 +1,21 @@
 name: fix_json
-model: open-llama-7B-open-instruct.ggmlv3.q5_1
+model: orca-mini-7b.ggmlv3.q5_1
 inferParams:
   - topK: 40,
   - topP: 0.1,
   - temp: 0,
   - repeatPenalty: 1
+  - stopSequence: "```"
 modelConf:
   - nCtx: 512
 template: |-
-  ### Instruction: Fix this invalid json:
+  ### System:
+  You are an AI assistant that follows instruction extremely well. You are
+  in charge of fixing json. Answer only with valid json
 
+  ### User:
+  Fix this invalid json:
+  
   {prompt}
-  ### Response: (Answer only with json)
+
+  ### Response: ```json

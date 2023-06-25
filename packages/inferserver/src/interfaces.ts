@@ -14,6 +14,7 @@ interface InferServerParams {
 interface LmRouterParams {
   lm?: ReturnType<typeof useLlama>;
   uiFile?: string;
+  useInferRoutes?: boolean;
   useModelsRoutes?: boolean;
   args?: Record<string, any>;
 }

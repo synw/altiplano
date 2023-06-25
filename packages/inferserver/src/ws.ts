@@ -1,8 +1,8 @@
-import { WebSocketServer, Server, WebSocket } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 
-let _wss: Server;
+let _wss: WebSocketServer;
 
-function wsMsg(message: any, wss?: Server): void {
+function wsMsg(message: any, wss?: WebSocketServer): void {
   const srv = wss ?? _wss;
   srv.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {

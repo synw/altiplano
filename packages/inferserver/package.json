@@ -1,6 +1,6 @@
 {
   "name": "@altiplano/inferserver",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Altiplano base inference server",
   "license": "MIT",
   "repository": {
@@ -33,6 +33,7 @@
     "@types/koa-router": "^7.4.4",
     "@types/koa-static": "^4.0.2",
     "@types/node": "^18.15.11",
+    "@types/ws": "^8.5.5",
     "autoprefixer": "^10.4.4",
     "nodemon": "^2.0.22",
     "npm-run-all": "^4.1.5",

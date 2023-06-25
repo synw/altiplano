@@ -17,7 +17,9 @@ function _runserver(modelsDirPath: string, tasksDir: string, loadModel?: string)
       enableWs: false,
       modelsDirPath: modelsDirPath,
       loadModel: loadModel,
-    });
+    },
+    true
+  );
   app.listen(5143, () => {
     console.log("Tasks server running on port 5143");
   });

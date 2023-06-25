@@ -22,7 +22,7 @@ cd tasks
 mkdir code
 cd code
 mkdir json
-touch mytask.yaml
+touch fix.yml
 ```
 
 The task content:
@@ -74,7 +74,7 @@ Run your own server using the library:
 #!/usr/bin/env node
 
 import { argv, exit } from "process";
-import { useTaskServer } from "../dist/server.js";
+import { useTaskServer } from "@altiplano/taskserver";
 
 
 function _runserver(modelsDirPath, tasksDir, loadModel) {
