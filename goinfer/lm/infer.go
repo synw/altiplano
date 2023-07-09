@@ -29,6 +29,8 @@ func Infer(prompt string, template string, params InferenceParams) (InferenceRes
 	state.ContinueInferingController = true
 	finalPrompt := strings.Replace(template, "{prompt}", prompt, 1)
 	if state.IsVerbose {
+		//fmt.Println("Inference params:")
+		//fmt.Println(params)
 		fmt.Println("---------- prompt ----------")
 		fmt.Println(finalPrompt)
 		fmt.Println("----------------------------")
@@ -60,9 +62,9 @@ func Infer(prompt string, template string, params InferenceParams) (InferenceRes
 		llama.SetFrequencyPenalty(params.FrequencyPenalty),
 		llama.SetPresencePenalty(params.PresencePenalty),
 	)
+	state.IsInfering = false
 	if err != nil {
-		state.IsInfering = false
-		panic(err)
+		return InferenceResult{}, err
 	}
 	emittingElapsed := time.Since(startEmitting)
 	if state.IsVerbose {

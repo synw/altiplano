@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/synw/altiplano/goinfer/lm"
@@ -24,17 +25,17 @@ func parseInferParams(m echo.Map) (string, string, lm.InferenceParams, error) {
 	threads := lm.DefaultInferenceParams.Threads
 	v, ok = m["threads"]
 	if ok {
-		threads = v.(int)
+		threads = int(v.(float64))
 	}
 	tokens := lm.DefaultInferenceParams.Tokens
 	v, ok = m["tokens"]
 	if ok {
-		tokens = v.(int)
+		tokens = int(v.(float64))
 	}
 	topK := lm.DefaultInferenceParams.TopK
 	v, ok = m["topK"]
 	if ok {
-		topK = v.(int)
+		topK = int(v.(float64))
 	}
 	topP := lm.DefaultInferenceParams.TopP
 	v, ok = m["topP"]
@@ -64,7 +65,10 @@ func parseInferParams(m echo.Map) (string, string, lm.InferenceParams, error) {
 	stop := lm.DefaultInferenceParams.StopPrompts
 	v, ok = m["stop"]
 	if ok {
-		tfs = v.(float64)
+		s := v.(string)
+		if len(s) > 0 {
+			stop = strings.Split(v.(string), ",")
+		}
 	}
 	params := lm.InferenceParams{
 		Threads:           threads,
@@ -96,7 +100,7 @@ func InferHandler(c echo.Context) error {
 	}
 	res, err := lm.Infer(prompt, template, params)
 	if err != nil {
-		panic(err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	//fmt.Println("-------- result ----------")

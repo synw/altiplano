@@ -1,15 +1,15 @@
 package lm
 
 type InferenceParams struct {
-	Threads           int
-	Tokens            int
-	TopK              int
-	TopP              float64
-	Temperature       float64
-	FrequencyPenalty  float64
-	PresencePenalty   float64
-	TailFreeSamplingZ float64
-	StopPrompts       []string
+	Threads           int      `json:"threads"`
+	Tokens            int      `json:"tokens"`
+	TopK              int      `json:"topK"`
+	TopP              float64  `json:"topP"`
+	Temperature       float64  `json:"temp"`
+	FrequencyPenalty  float64  `json:"freqPenalty"`
+	PresencePenalty   float64  `json:"presPrenalty"`
+	TailFreeSamplingZ float64  `json:"tfs"`
+	StopPrompts       []string `json:"stop"`
 }
 
 type InferenceResult struct {
