@@ -1,0 +1,23 @@
+<template>
+  <div class="flex flex-col space-y-2">
+    <div v-for="t in templates" class="flex flex-row group">
+      <div class="justify-start w-2/3 ml-2 truncate">
+        <button class="btn" @click="loadTemplate(t)">
+          {{ t }}
+        </button>
+      </div>
+      <div class="flex flex-row justify-end w-1/3 mr-1 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+        <confirm-delete @delete="db.delTemplate(t); loadTemplates()"></confirm-delete>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onBeforeMount, ref } from 'vue';
+import ConfirmDelete from '@/widgets/ConfirmDelete.vue';
+import { loadTemplate } from './inference/state';
+import { db, loadTemplates, templates } from '@/state';
+
+onBeforeMount(() => loadTemplates())
+</script>
