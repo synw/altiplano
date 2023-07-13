@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
 import ConfirmDelete from '@/widgets/ConfirmDelete.vue';
-import { loadTemplate } from './inference/state';
+import { loadTemplate } from '@/state';
 import { db, loadTemplates, templates } from '@/state';
 
 onBeforeMount(() => loadTemplates())

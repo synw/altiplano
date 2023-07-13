@@ -1,10 +1,13 @@
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import { ApiResponse, useApi } from "restmix";
 import { User } from "@snowind/state";
+import llamaTokenizer from 'llama-tokenizer-js';
+import { defaultInferenceParams } from '@/const/params';
+import { templates as _templates } from '@/const/templates';
+import { LmTemplate, TemporaryInferResult } from '@/interfaces';
 import { useWs } from "@/ws";
 import { loadModels } from "@/services/api";
 import { msg } from "./services/notify";
-import { inferResults } from "./components/inference/state";
 import { useDb } from "./services/db";
 
 const user = new User();
@@ -27,6 +30,63 @@ const models = reactive<Array<string>>([]);
 const prompts = reactive<Array<string>>([]);
 const templates = reactive<Array<string>>([]);
 //const tasks = reactive<Array<TaskContract>>([]);
+
+const template = reactive<LmTemplate>(_templates.alpaca);
+const prompt = ref("");
+const inferParams = reactive(defaultInferenceParams);
+const inferResults = reactive<TemporaryInferResult>({
+  tokensPerSecond: 0,
+  totalTokens: 0,
+});
+const secondsCount = ref(0);
+const promptTokensCount = ref(0);
+const templateTokensCount = ref(0);
+
+const freeCtx = computed(() => {
+  return Math.round(lmState.ctx - (promptTokensCount.value + templateTokensCount.value))
+});
+
+function setMaxTokens() {
+  inferParams.tokens = freeCtx.value;
+}
+
+function countPromptTokens() {
+  promptTokensCount.value = llamaTokenizer.encode(prompt.value).length;
+  setMaxTokens();
+}
+
+function countTemplateTokens() {
+  templateTokensCount.value = llamaTokenizer.encode(template.content).length;
+  setMaxTokens();
+}
+
+function clearInferResults() {
+  inferResults.totalTokens = 0;
+  inferResults.thinkingTimeFormat = "";
+  inferResults.emitTimeFormat = "";
+  inferResults.totalTimeFormat = "";
+  inferResults.tokensPerSecond = 0;
+  secondsCount.value = 0;
+}
+
+async function loadTemplate(name: string) {
+  const t = await db.loadTemplate(name);
+  template.name = t.name;
+  template.content = t.content;
+  template.vars = t.vars;
+  countTemplateTokens();
+}
+
+async function loadPrompt(name: string) {
+  prompt.value = await db.loadPrompt(name);
+  countPromptTokens();
+}
+
+function checkMaxTokens(ctx: number) {
+  if (inferParams.tokens > ctx) {
+    inferParams.tokens = ctx - 64;
+  }
+}
 
 async function initState() {
   db.init().then(async () => {
@@ -65,6 +125,9 @@ function mutateModel(_model: string, _ctx: number) {
   lmState.model = _model;
   lmState.ctx = _ctx;
   lmState.isModelLoaded = true;
+  checkMaxTokens(lmState.ctx);
+  setMaxTokens();
+  clearInferResults();
 }
 
 async function loadPrompts() {
@@ -86,10 +149,22 @@ export {
   db,
   prompts,
   templates,
-  //tasks, 
-  //currentTask, 
+  template,
+  prompt,
+  inferParams,
+  inferResults,
+  secondsCount,
+  promptTokensCount,
+  templateTokensCount,
+  freeCtx,
+  loadTemplate,
+  loadPrompt,
+  checkMaxTokens,
+  countPromptTokens,
+  countTemplateTokens,
   initState,
   mutateModel,
   loadPrompts,
   loadTemplates,
+  clearInferResults,
 }

@@ -5,7 +5,7 @@
       <label for="tname">Name</label>
     </div>
     <div class="mt-3">
-      <button class="btn success" :disabled="tname.length == 0" @click="save">Save</button>
+      <button class="btn success" :disabled="tname.length == 0" @click="save">Save template</button>
     </div>
   </div>
 </template>
@@ -14,13 +14,13 @@
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import { db, loadTemplates } from '@/state';
-import { template } from "./state";
+import { template } from "@/state";
 
 const emit = defineEmits(["pick"]);
 const tname = ref("");
 
 async function save() {
-  await db.setTemplate(tname.value, template.value.content);
+  await db.setTemplate(tname.value, template.content);
   await loadTemplates();
   emit("pick")
 }

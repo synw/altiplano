@@ -40,7 +40,7 @@
         </span>
       </div>
     </div>
-    <div class="flex flex-row mt-5 mr-8 space-x-3">
+    <div class="flex flex-row mt-8 mr-8 space-x-3">
       <div class="p-float-label">
         <InputText inputId="stop" v-model="inferParams.stop" class="w-full max-w-[8rem] 3xl:max-w-[16rem]" />
         <label for="stop">Stop words</label>
@@ -52,13 +52,13 @@
         </span>
       </div>
     </div>
-    <div class="mt-8">
+    <div class="mt-5">
       <div class="p-float-label">
         <InputText inputId="tokens" class="hidden w-full" />
         <label for="tokens">Tokens</label>
       </div>
       <div class="mt-5 mr-8">
-        <Slider v-model="inferParams.tokens" class="w-full" :min="64" :max="lmState.ctx" :step="64" />
+        <Slider v-model="inferParams.tokens" class="w-full" :min="64" :max="lmState.ctx" />
       </div>
       <div class="flex flex-row">
         <div class="p-3 txt-semilight">64</div>
@@ -76,7 +76,7 @@ import InputNumber from 'primevue/inputnumber';
 import InputText from 'primevue/inputtext';
 import Slider from 'primevue/slider';
 import { lmState } from '@/state';
-import { inferParams } from './state';
+import { inferParams } from '@/state';
 </script>
 
 <style lang="sass">

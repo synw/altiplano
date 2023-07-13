@@ -5,7 +5,7 @@
       <label for="promptname">Name</label>
     </div>
     <div class="mt-3">
-      <button class="btn success" :disabled="promptname.length == 0" @click="save">Save</button>
+      <button class="btn success" :disabled="promptname.length == 0" @click="save">Save prompt</button>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import { db, loadPrompts } from '@/state';
-import { prompt } from "./state";
+import { prompt } from "@/state";
 
 const emit = defineEmits(["pick"]);
 const promptname = ref("");

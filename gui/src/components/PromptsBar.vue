@@ -15,6 +15,6 @@
 
 <script setup lang="ts">
 import { prompts, db, loadPrompts } from '@/state';
-import { loadPrompt } from "./inference/state";
+import { loadPrompt } from "@/state";
 import ConfirmDelete from '@/widgets/ConfirmDelete.vue';
 </script>

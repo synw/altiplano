@@ -24,7 +24,6 @@ interface TemporaryInferResult {
   totalTimeFormat?: string;
   tokensPerSecond: number;
   totalTokens: number;
-  tokensPerSecondTimeline: Array<number>;
 }
 
 interface InferParams {
