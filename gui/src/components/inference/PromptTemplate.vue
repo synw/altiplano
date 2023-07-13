@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3 mb-12 form h-main">
+  <div id="infer-block" class="px-3 mb-12 overflow-y-auto form h-main">
     <div class="flex flex-col">
       <div class="pt-3">
         <Textarea v-model="template.content" class="w-full h-48" />
@@ -7,7 +7,7 @@
       <div class="pt-2">
         <Textarea v-model="prompt" rows="1" class="w-full" autoResize />
       </div>
-      <div class="flex flex-row items-center justify-end pt-3 space-x-2" v-if="lmState.isModelLoaded">
+      <div class="flex flex-row items-center justify-end pt-3 space-x-2 h-1/3" v-if="lmState.isModelLoaded">
         <div class="flex flex-row items-center flex-grow txt-semilight">
           <button class="px-2 btn" v-show="prompt.length > 0" @click="toggleSavePrompt($event)">
             <i-tabler:prompt class="text-3xl"></i-tabler:prompt>
@@ -16,7 +16,7 @@
             <save-prompt-dialog class="p-3 mt-3" @pick="toggleSavePrompt($event)"></save-prompt-dialog>
           </OverlayPanel>
           <button class="px-2 btn" v-show="template.content.length > 0" @click="toggleSaveTemplate($event)">
-            <i-icomoon-free:insert-template class="text-xl"></i-icomoon-free:insert-template>
+            <i-bi:menu-up class="text-xl"></i-bi:menu-up>
           </button>
           <OverlayPanel ref="saveTemplateCollapse">
             <save-template-dialog class="p-3 mt-3" @pick="toggleSaveTemplate($event)"></save-template-dialog>
@@ -42,9 +42,8 @@
       <div v-if="lmState.isRunning == true && lmState.isStreaming == false">
         <LoadingSpinner class="pt-16 text-6xl txt-lighter" />
       </div>
-      <div>
-        <div id="infer-result" class="mt-8 mb-12 overflow-auto text-justify"
-          v-html="stream.replaceAll('\n', '<br />').replaceAll('\t', '&nbsp;&nbsp;')">
+      <div class="mt-5 mb-8 h-2/3">
+        <div class="mb-8 text-justify" v-html="stream.replaceAll('\n', '<br />').replaceAll('\t', '&nbsp;&nbsp;')">
         </div>
         <!-- pre class="mx-3">{{ stream }}</pre>
         <div class="mx-3 mt-8">

@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     copy: typeof import('./src/components/inference/SavePromptDialog copy.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     'IAkarIcons:cross': typeof import('~icons/akar-icons/cross')['default']
+    'IBi:menuUp': typeof import('~icons/bi/menu-up')['default']
     'ICarbon:network4': typeof import('~icons/carbon/network4')['default']
     'ICarbon:taskTools': typeof import('~icons/carbon/task-tools')['default']
     IClaritySettingsLine: typeof import('~icons/clarity/settings-line')['default']

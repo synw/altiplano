@@ -17,7 +17,7 @@ const useWs = (
       onStartInfer();
     }
     onMsg(msg);
-    const resEl = document.getElementById("infer-result") as HTMLElement;
+    const resEl = document.getElementById("infer-block") as HTMLElement;
     resEl.scrollTop = resEl.scrollHeight;
   };
   ws.onerror = (event) => {

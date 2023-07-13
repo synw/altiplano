@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <div class="text-sm flex flex-row w-full 3xl:max-w-[28rem] items-center">
-      <div class="text-center danger" :style="`width:${templatePercent}%`">{{ templateTokensCount }}</div>
-      <div class="text-center warning" :style="`width:${promptPercent}%`">{{ promptTokensCount }}</div>
-      <div class="flex-grow text-center success">{{ freeCtx }}</div>
-    </div>
+  <div class="text-sm flex flex-row w-full 3xl:max-w-[28rem] items-center pr-8">
+    <div class="text-center danger" :style="`width:${templatePercent}%`">{{ templateTokensCount }}</div>
+    <div class="text-center warning" :style="`width:${promptPercent}%`">{{ promptTokensCount }}</div>
+    <div class="flex-grow text-center success">{{ freeCtx }}</div>
   </div>
 </template>
 
