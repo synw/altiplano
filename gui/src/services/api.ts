@@ -1,6 +1,7 @@
 import { api, models, mutateModel, stream, lmState } from "@/state";
 import type { InferParams, InferResultContract } from "@/interfaces";
 import { ModelStateContract } from "@/interfaces";
+import { checkMaxTokens } from "@/components/inference/state";
 
 
 async function infer(_prompt: string, _template: string, _params: InferParams): Promise<InferResultContract> {
@@ -33,7 +34,8 @@ async function loadModels() {
   if (res.ok) {
     models.splice(0, models.length, ...res.data.models);
     if (res.data.isModelLoaded) {
-      mutateModel(res.data.loadedModel, res.data.ctx)
+      mutateModel(res.data.loadedModel, res.data.ctx);
+      checkMaxTokens(res.data.ctx)
     }
   }
 }
@@ -52,6 +54,7 @@ async function selectModel(name: string, ctx: number) {
     mutateModel(name, ctx);
   }
   lmState.isLoadingModel = false;
+  checkMaxTokens(ctx)
 }
 
 export { infer, abort, loadModels, selectModel }

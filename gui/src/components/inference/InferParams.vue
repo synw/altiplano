@@ -40,6 +40,18 @@
         </span>
       </div>
     </div>
+    <div class="flex flex-row mt-5 mr-8 space-x-3">
+      <div class="p-float-label">
+        <InputText inputId="stop" v-model="inferParams.stop" class="w-full max-w-[8rem] 3xl:max-w-[16rem]" />
+        <label for="stop">Stop words</label>
+      </div>
+      <div>
+        <span class="p-float-label">
+          <InputNumber class="w-8" v-model="inferParams.threads" inputId="threads" showButtons />
+          <label for="threads">threads</label>
+        </span>
+      </div>
+    </div>
     <div class="mt-8">
       <div class="p-float-label">
         <InputText inputId="tokens" class="hidden w-full" />
@@ -56,19 +68,6 @@
         <div class="p-3 txt-semilight">{{ lmState.ctx }}</div>
       </div>
     </div>
-    <div class="flex flex-row mt-5 mr-8 space-x-3">
-      <div class="p-float-label">
-        <InputText inputId="stop" v-model="inferParams.stop" class="w-full max-w-[8rem] 3xl:max-w-[16rem]" />
-        <label for="stop">Stop words</label>
-      </div>
-      <div>
-        <span class="p-float-label">
-          <InputNumber class="w-8" v-model="inferParams.threads" inputId="threads" showButtons />
-          <label for="threads">threads</label>
-        </span>
-      </div>
-    </div>
-
   </div>
 </template>
 

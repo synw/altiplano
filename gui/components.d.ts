@@ -29,6 +29,7 @@ declare module '@vue/runtime-core' {
     'IMingcute:delete2Line': typeof import('~icons/mingcute/delete2-line')['default']
     InferParams: typeof import('./src/components/inference/InferParams.vue')['default']
     InferResult: typeof import('./src/components/inference/InferResult.vue')['default']
+    InferStats: typeof import('./src/components/inference/InferStats.vue')['default']
     'IPh:playBold': typeof import('~icons/ph/play-bold')['default']
     'IRaphael:edit': typeof import('~icons/raphael/edit')['default']
     'ITabler:network': typeof import('~icons/tabler/network')['default']

@@ -1,8 +1,8 @@
 <template>
-  <div class="px-3 mb-12 form">
+  <div class="px-3 mb-12 form h-main">
     <div class="flex flex-col">
       <div class="pt-3">
-        <Textarea v-model="template.content" autoResize class="w-full" />
+        <Textarea v-model="template.content" class="w-full h-48" />
       </div>
       <div class="pt-2">
         <Textarea v-model="prompt" rows="1" class="w-full" autoResize />
@@ -29,23 +29,32 @@
       <div v-if="lmState.isRunning == true && lmState.isStreaming == false">
         <LoadingSpinner class="pt-16 text-6xl txt-lighter" />
       </div>
-      <div id="infer-result" class="mt-8 mb-12 overflow-auto text-justify"
-        v-html="stream.replaceAll('\n', '<br />').replaceAll('\t', '&nbsp;&nbsp;')">
+      <div>
+        <!-- div id="infer-result" class="mt-8 mb-12 overflow-auto text-justify"
+          v-html="stream.replaceAll('\n', '<br />').replaceAll('\t', '&nbsp;&nbsp;')">
+        </div -->
+        <!-- pre>{{ stream }}</pre -->
+        <div class="mt-8">
+          <render-md :hljs="hljs" :source="stream"></render-md>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { watchDebounced } from '@vueuse/core';
 import OverlayPanel from 'primevue/overlaypanel';
 import Textarea from 'primevue/textarea';
+import { RenderMd } from '@docdundee/vue';
 import { lmState, stream } from '@/state';
 import { infer, abort } from "@/services/api";
 import LoadingSpinner from '@/widgets/LoadingSpinner.vue';
 import SavePromptDialog from './SavePromptDialog.vue';
 import SaveTemplateDialog from './SaveTemplateDialog.vue';
-import { template, prompt, inferParams, inferResults, secondsCount } from './state';
+import { template, prompt, inferParams, inferResults, secondsCount, countPromptTokens, countTemplateTokens } from './state';
+import { hljs } from "@/conf";
 
 const savePromptCollapse = ref();
 const saveTemplateCollapse = ref();
@@ -60,7 +69,7 @@ async function processInfer() {
     inferResults.tokensPerSecond = tps;
     inferResults.tokensPerSecondTimeline.push(tps);
   }, 1000);
-  const res = await infer(prompt.value, template.value.content, inferParams);
+  const res = await infer(prompt.value, template.content, inferParams);
   clearInterval(id);
   inferResults.thinkingTimeFormat = res.thinkingTimeFormat;
   inferResults.emitTimeFormat = res.emitTimeFormat;
@@ -74,4 +83,11 @@ function toggleSavePrompt(evt) {
 function toggleSaveTemplate(evt) {
   saveTemplateCollapse.value.toggle(evt);
 }
+
+onMounted(() => {
+  countPromptTokens();
+  countTemplateTokens();
+  watchDebounced(template, countTemplateTokens, { debounce: 1000, maxWait: 5000 });
+  watchDebounced(prompt, countPromptTokens, { debounce: 1000, maxWait: 5000 });
+})
 </script>

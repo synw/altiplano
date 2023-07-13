@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen background">
     <the-header class="fixed top-0 left-0 h-16 border-b bord-lighter"></the-header>
-    <div class="w-full h-full">
+    <div class="w-full h-main">
       <router-view></router-view>
     </div>
   </div>
@@ -35,6 +35,8 @@ onMounted(() => initNotifyService())
   @apply background bord-lighter
 .p-overlaypanel-content
   @apply dark:bord-lighter border
+.h-main
+  height: calc( 100% -  4rem)
 </style>
 
 

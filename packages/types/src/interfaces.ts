@@ -18,7 +18,7 @@ interface TemplateVar {
   content: string;
 }
 
-interface InferenceResult {
+interface InferResultContract {
   tokens: Array<string>;
   completed: boolean;
   text: string;
@@ -152,5 +152,5 @@ export {
   OptionalModelParams,
   LogitBias,
   TemplateVar,
-  InferenceResult,
+  InferResultContract,
 }

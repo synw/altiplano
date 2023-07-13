@@ -8,10 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@docdundee/vue": "^0.0.21",
     "@snowind/header": "^0.0.11",
     "@snowind/plugin": "^0.5.0",
     "@snowind/sidebar": "^0.0.3",
     "@snowind/state": "^0.1.0",
+    "highlight.js": "^11.8.0",
+    "llama-tokenizer-js": "^1.1.1",
     "localforage": "^1.10.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.27.0",
