@@ -23,3 +23,27 @@ type InferenceResult struct {
 	TokensPerSecond    float64 `json:"tokensPerSecond"`
 	TotalTokens        int     `json:"totalTokens"`
 }
+
+type Task struct {
+	Name        string                  `yaml:"name"`
+	Model       string                  `yaml:"model"`
+	Template    string                  `yaml:"template"`
+	ModelConf   ModelConf               `yaml:"modelConf,omitempty"`
+	InferParams OptionalInferParameters `yaml:"inferParams,omitempty"`
+}
+
+type ModelConf struct {
+	Ctx int `yaml:"ctx"`
+}
+
+type OptionalInferParameters struct {
+	Threads     int     `yaml:"threads,omitempty"`
+	Tokens      int     `yaml:"tokens,omitempty"`
+	TopK        int     `yaml:"topK,omitempty"`
+	TopP        float64 `yaml:"topP,omitempty"`
+	Temp        float64 `yaml:"temp,omitempty"`
+	FreqPenalty int     `yaml:"freqPenalty,omitempty"`
+	PresPenalty int     `yaml:"presPenalty,omitempty"`
+	Tfs         int     `yaml:"tfs,omitempty"`
+	Stop        string  `yaml:"stop,omitempty"`
+}

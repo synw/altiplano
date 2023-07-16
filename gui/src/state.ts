@@ -4,9 +4,9 @@ import { User } from "@snowind/state";
 import llamaTokenizer from 'llama-tokenizer-js';
 import { defaultInferenceParams } from '@/const/params';
 import { templates as _templates } from '@/const/templates';
-import { LmTemplate, TemporaryInferResult } from '@/interfaces';
-import { useWs } from "@/ws";
-import { loadModels } from "@/services/api";
+import { LmTemplate, Task, TemporaryInferResult } from '@/interfaces';
+import { useWs } from "@/services/ws";
+import { loadModels, loadTasks as _loadTasks, selectModel } from "@/services/api";
 import { msg } from "./services/notify";
 import { useDb } from "./services/db";
 
@@ -29,7 +29,7 @@ const stream = ref("");
 const models = reactive<Array<string>>([]);
 const prompts = reactive<Array<string>>([]);
 const templates = reactive<Array<string>>([]);
-//const tasks = reactive<Array<TaskContract>>([]);
+const tasks = reactive<Array<Record<string, any>>>([]);
 
 const template = reactive<LmTemplate>(_templates.alpaca);
 const prompt = ref("");
@@ -82,6 +82,19 @@ async function loadPrompt(name: string) {
   countPromptTokens();
 }
 
+async function loadTask(t: Task) {
+  let ctx = t?.modelConf?.ctx ?? lmState.ctx;
+  if (t.model != lmState.model) {
+    await selectModel(t.model, ctx);
+  }
+  template.content = t.template;
+  countTemplateTokens();
+  const ip = t.inferParams ?? {};
+  Object.keys(ip).forEach((p) => {
+    inferParams[p] = ip[p]
+  });
+}
+
 function checkMaxTokens(ctx: number) {
   if (inferParams.tokens > ctx) {
     inferParams.tokens = ctx - 64;
@@ -93,6 +106,7 @@ async function initState() {
     loadPrompts();
     loadTemplates();
   });
+  loadTasks();
   useWs(
     (data) => {
       stream.value = stream.value + data;
@@ -140,6 +154,11 @@ async function loadTemplates() {
   templates.splice(0, templates.length, ...t);
 }
 
+async function loadTasks() {
+  const t = await _loadTasks();
+  tasks.splice(0, tasks.length, ...t);
+}
+
 export {
   user,
   api,
@@ -149,6 +168,7 @@ export {
   db,
   prompts,
   templates,
+  tasks,
   template,
   prompt,
   inferParams,
@@ -167,4 +187,6 @@ export {
   loadPrompts,
   loadTemplates,
   clearInferResults,
+  loadTasks,
+  loadTask,
 }

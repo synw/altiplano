@@ -9,17 +9,23 @@
       </div>
       <div class="flex flex-row items-center justify-end pt-3 space-x-2 h-1/3" v-if="lmState.isModelLoaded">
         <div class="flex flex-row items-center flex-grow txt-semilight">
-          <button class="px-2 btn" v-show="prompt.length > 0" @click="toggleSavePrompt($event)">
-            <i-tabler:prompt class="text-3xl"></i-tabler:prompt>
+          <button class="px-2 btn" v-show="template.content.length > 0" @click="toggleSaveTask($event)">
+            <i-carbon:task-star class="text-2xl"></i-carbon:task-star>
           </button>
-          <OverlayPanel ref="savePromptCollapse">
-            <save-prompt-dialog class="p-3 mt-3" @pick="toggleSavePrompt($event)"></save-prompt-dialog>
+          <OverlayPanel ref="saveTaskCollapse">
+            <save-task-dialog class="p-3 mt-3" @pick="toggleSaveTask($event)"></save-task-dialog>
           </OverlayPanel>
           <button class="px-2 btn" v-show="template.content.length > 0" @click="toggleSaveTemplate($event)">
             <i-bi:menu-up class="text-xl"></i-bi:menu-up>
           </button>
           <OverlayPanel ref="saveTemplateCollapse">
             <save-template-dialog class="p-3 mt-3" @pick="toggleSaveTemplate($event)"></save-template-dialog>
+          </OverlayPanel>
+          <button class="px-2 btn" v-show="prompt.length > 0" @click="toggleSavePrompt($event)">
+            <i-tabler:prompt class="text-3xl"></i-tabler:prompt>
+          </button>
+          <OverlayPanel ref="savePromptCollapse">
+            <save-prompt-dialog class="p-3 mt-3" @pick="toggleSavePrompt($event)"></save-prompt-dialog>
           </OverlayPanel>
         </div>
         <button class="btn txt-semilight" v-show="stream.length > 0 && !lmState.isRunning"
@@ -65,11 +71,13 @@ import { infer, abort } from "@/services/api";
 import LoadingSpinner from '@/widgets/LoadingSpinner.vue';
 import SavePromptDialog from './SavePromptDialog.vue';
 import SaveTemplateDialog from './SaveTemplateDialog.vue';
+import SaveTaskDialog from './SaveTaskDialog.vue';
 import { template, prompt, inferParams, inferResults, secondsCount, countPromptTokens, countTemplateTokens } from '@/state';
 import { hljs } from "@/conf";
 
 const savePromptCollapse = ref();
 const saveTemplateCollapse = ref();
+const saveTaskCollapse = ref();
 
 async function processInfer() {
   clearInferResults();
@@ -91,6 +99,10 @@ function toggleSavePrompt(evt) {
 
 function toggleSaveTemplate(evt) {
   saveTemplateCollapse.value.toggle(evt);
+}
+
+function toggleSaveTask(evt) {
+  saveTaskCollapse.value.toggle(evt);
 }
 
 onMounted(() => {

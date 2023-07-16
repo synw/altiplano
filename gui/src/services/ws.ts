@@ -16,6 +16,11 @@ const useWs = (
     if (data.nToken == 0) {
       onStartInfer();
     }
+    if (data.nToken < 2) {
+      if (msg == "\n") {
+        return
+      }
+    }
     onMsg(msg);
     const resEl = document.getElementById("infer-block") as HTMLElement;
     resEl.scrollTop = resEl.scrollHeight;

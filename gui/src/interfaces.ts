@@ -38,6 +38,24 @@ interface InferParams {
   stop: string;
 }
 
+interface Task {
+  name: string;
+  model: string;
+  template: string;
+  modelConf?: { ctx: number }
+  inferParams?: {
+    threads?: number;
+    tokens?: number;
+    topK?: number;
+    topP?: number;
+    temp?: number;
+    freqPenalty?: number;
+    presPenalty?: number;
+    tfs?: number;
+    stop?: string;
+  }
+}
+
 interface LmTemplate {
   name: string;
   content: string;
@@ -57,4 +75,5 @@ export {
   TemporaryInferResult,
   LmTemplate,
   LmPrompt,
+  Task,
 }

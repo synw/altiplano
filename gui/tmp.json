@@ -1,0 +1,38 @@
+[
+  {
+    "key": "1",
+    "label": "code",
+    "type": "folder",
+    "path": "code",
+    "children": [
+      {
+        "key": "2",
+        "label": "json",
+        "type": "folder",
+        "path": "code/json",
+        "children": [
+          {
+            "key": "3",
+            "type": "task",
+            "path": "code/json/fix.yml",
+            "label": "fix.yml"
+          }
+        ]
+      },
+      {
+        "key": "4",
+        "label": "other",
+        "type": "folder",
+        "path": "code/other",
+        "children": [
+          {
+            "key": "5",
+            "type": "task",
+            "path": "code/other/test.yml",
+            "label": "test.yml"
+          }
+        ]
+      }
+    ]
+  }
+]
